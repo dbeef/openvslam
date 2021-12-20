@@ -1,0 +1,49 @@
+diff --git a/src/openvslam/CMakeLists.txt b/src/openvslam/CMakeLists.txt
+index 978140a..7c558e0 100644
+--- a/src/openvslam/CMakeLists.txt
++++ b/src/openvslam/CMakeLists.txt
+@@ -44,10 +44,7 @@ endif()
+ if(BOW_FRAMEWORK MATCHES "DBoW2")
+     find_package(DBoW2 REQUIRED)
+ elseif(BOW_FRAMEWORK MATCHES "FBoW")
+-    find_package(fbow QUIET)
+-    if(NOT fbow_FOUND)
+-        add_subdirectory(${PROJECT_SOURCE_DIR}/3rd/FBoW ${PROJECT_BINARY_DIR}/3rd/FBoW)
+-    endif()
++    add_subdirectory(${PROJECT_SOURCE_DIR}/3rd/FBoW ${PROJECT_BINARY_DIR}/3rd/FBoW)
+ else()
+     message(FATAL_ERROR "Invalid BoW framework: ${BOW_FRAMEWORK}")
+ endif()
+diff --git a/src/pangolin_viewer/CMakeLists.txt b/src/pangolin_viewer/CMakeLists.txt
+index 5b56868..4bb0c72 100644
+--- a/src/pangolin_viewer/CMakeLists.txt
++++ b/src/pangolin_viewer/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ # ----- Find dependencies -----
+ 
+ # Pangolin
+-find_package(Pangolin REQUIRED)
++find_package(Pangolin CONFIG REQUIRED)
+ 
+ # ----- Configure PangolinViewer library -----
+ 
+@@ -13,6 +13,7 @@ add_library(pangolin_viewer
+ 
+ set_target_properties(pangolin_viewer PROPERTIES
+                       OUTPUT_NAME pangolin_viewer
++                      CXX_STANDARD 17
+                       ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib
+                       LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
+ 
+@@ -24,7 +25,10 @@ target_link_libraries(pangolin_viewer
+                       PUBLIC
+                       ${PROJECT_NAME}
+                       opencv_highgui
+-                      pangolin)
++                      pango_core
++                      pango_display
++                      pango_glgeometry
++                      pango_opengl)
+ 
+ # ----- Install configuration -----
+ 
